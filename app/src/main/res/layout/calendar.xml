@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/layout_calendar">
+        <CalendarView
+            android:id="@+id/cv_record_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </CalendarView>
+
+        <TextView
+            android:id="@+id/tv_record_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:textColor="#FF4081"/>
+
+        <Button
+            android:id="@+id/btn_record_choose"
+            android:text="选择"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:background="@drawable/circle"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+</LinearLayout>

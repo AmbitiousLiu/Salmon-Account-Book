@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value = "accountbook"></dbname>
+    <version value="4"></version>
+    <list><mapping class="com.example.salmonaccountbook.Data"></mapping></list>
+    <list><mapping class="com.example.salmonaccountbook.Person"></mapping></list>
+</litepal>

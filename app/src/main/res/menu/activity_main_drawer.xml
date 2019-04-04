@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <!--Drawer的下半部分布局（各种设置显示的布局）-->
+
+    <item android:title="About Something">
+        <menu>
+            <item
+                android:id="@+id/nav_background"
+                android:icon="@drawable/ic_menu_background"
+                android:title="Modify Background" />
+            <item
+                android:id="@+id/nav_night"
+                android:icon="@drawable/ic_menu_night"
+                android:title="Nocturnal Pattern"/>
+            <item
+                android:id="@+id/nav_lock"
+                android:icon="@drawable/ic_menu_lock"
+                android:title="Hand Lock" />
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_menu_setting"
+                android:title="Setting" />
+            <item
+                android:id="@+id/nav_deleteaccount"
+                android:icon="@drawable/ic_menu_delete_account"
+                android:title="Delete_account" />
+            <item
+                android:id="@+id/nav_deleteall"
+                android:icon="@drawable/ic_menu_delete_all"
+                android:title="Delete_user" />
+            <item
+                android:id="@+id/nav_aboutus"
+                android:icon="@drawable/ic_menu_aboutus"
+                android:title="About Us"/>
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@drawable/ic_menu_exit"
+                android:title="Exit"/>
+        </menu>
+    </item>
+
+</menu>
