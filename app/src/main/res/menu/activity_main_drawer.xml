@@ -6,7 +6,7 @@
 
     <!--Drawer的下半部分布局（各种设置显示的布局）-->
 
-    <item android:title="About Something">
+    <item android:title="FUNCTION">
         <menu>
             <item
                 android:id="@+id/nav_background"
@@ -25,6 +25,18 @@
                 android:icon="@drawable/ic_menu_setting"
                 android:title="Setting" />
             <item
+                android:id="@+id/nav_aboutus"
+                android:icon="@drawable/ic_menu_aboutus"
+                android:title="About Us"/>
+            <item
+                android:id="@+id/nav_summarize"
+                android:icon="@drawable/barchart"
+                android:title="Summarize"/>
+        </menu>
+    </item>
+    <item android:title="DATA">
+        <menu>
+            <item
                 android:id="@+id/nav_deleteaccount"
                 android:icon="@drawable/ic_menu_delete_account"
                 android:title="Delete_account" />
@@ -32,10 +44,6 @@
                 android:id="@+id/nav_deleteall"
                 android:icon="@drawable/ic_menu_delete_all"
                 android:title="Delete_user" />
-            <item
-                android:id="@+id/nav_aboutus"
-                android:icon="@drawable/ic_menu_aboutus"
-                android:title="About Us"/>
             <item
                 android:id="@+id/nav_exit"
                 android:icon="@drawable/ic_menu_exit"

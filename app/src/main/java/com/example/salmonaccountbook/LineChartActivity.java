@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -66,6 +68,7 @@ public class LineChartActivity extends AppCompatActivity {
         set.setValueTextSize(15);                                   //字体大小
         set.setLineWidth(2);                                        //线条宽度
         set.setCircleColor(Color.parseColor("#0080FF"));//圆点颜色
+
         LineData lineData = new LineData(set);
         lineChart.setData(lineData);
         lineChart.invalidate();                                                //刷新显示绘图

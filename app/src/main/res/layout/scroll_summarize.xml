@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_summarize"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/spreadBarChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="270dp"
+                        android:layout_gravity="center_horizontal" />
+
+
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/spreadBarChart1"
+                        android:layout_width="match_parent"
+                        android:layout_height="270dp"
+                        android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="5dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_scroll"
+            android:text="2019/4"
+            android:textSize="20dp"
+            android:textColor="#fff"
+            android:background="@drawable/shape"
+            android:layout_gravity="center_vertical"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/analysis"
+                android:src="@drawable/barchart2"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

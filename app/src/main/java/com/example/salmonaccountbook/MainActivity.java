@@ -403,6 +403,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     }).create();
             dialog1.show();
+        }else if(id == R.id.nav_summarize){
+            Intent intent = new Intent(MainActivity.this,Scroll_SummarizeActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
