@@ -48,11 +48,16 @@ public class LineChart_TypeActivity extends AppCompatActivity {
                     .find(Data.class);
             float total1 = 0;
             for (Data data : dataList1) {
-                total1 += data.getMoney();
+                if(data.getIe().equals("income")){
+                    total1 += data.getMoney();
+                }else{
+                    total1 -= data.getMoney();
+                }
+
             }
             entries.add(new Entry(i + 1, total1));
         }
-        LineDataSet set = new LineDataSet(entries, "BarDataSet");
+        LineDataSet set = new LineDataSet(entries, "Money");
         set.setColor(Color.parseColor("#00A600"));         //设置线条颜色
         set.setDrawValues(true);                                      //设置显示数据点值
         set.setValueTextColor(Color.parseColor("#46A3FF"));//设置显示值的字体颜色

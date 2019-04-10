@@ -48,6 +48,9 @@ public class RegisterActivity extends AppCompatActivity {
                 else if(people.isEmpty()==false){
                     Toast.makeText(RegisterActivity.this,"该用户已注册！",Toast.LENGTH_LONG).show();
                 }
+                else if(et_password_register.getText().toString().length()<6){
+                    Toast.makeText(RegisterActivity.this,"密码不能少于6位数！",Toast.LENGTH_LONG).show();
+                }
                 else{
                     Person person = new Person();
                     person.setUsername(et_name_register.getText().toString());

@@ -65,6 +65,7 @@ public class TypeActivity extends AppCompatActivity {
     final ImageView iv_title_back = findViewById(R.id.iv_title_back);
         final ImageView iv_title_delete = findViewById(R.id.iv_title_delete);
         final CheckBox checkBox = findViewById(R.id.cb_iedetail_item_check);
+        ImageView linechart = findViewById(R.id.linechart_type);
 
         final String username;
         username = LoginActivity.username;
@@ -129,7 +130,7 @@ public class TypeActivity extends AppCompatActivity {
             }
         });
 
-        tv_type.setOnClickListener(new View.OnClickListener() {
+        linechart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TypeActivity.this,LineChart_TypeActivity.class);

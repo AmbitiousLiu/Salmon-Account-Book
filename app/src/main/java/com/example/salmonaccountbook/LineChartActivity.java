@@ -61,7 +61,7 @@ public class LineChartActivity extends AppCompatActivity {
         }
         entries.add(new Entry(i + 1,total1));
     }
-        LineDataSet set = new LineDataSet(entries, "BarDataSet");
+        LineDataSet set = new LineDataSet(entries, "Money");
         set.setColor(Color.parseColor("#00A600"));         //设置线条颜色
         set.setDrawValues(true);                                      //设置显示数据点值
         set.setValueTextColor(Color.parseColor("#46A3FF"));//设置显示值的字体颜色
