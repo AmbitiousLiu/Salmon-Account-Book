@@ -1,10 +1,14 @@
 package com.example.salmonaccountbook;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,11 +16,17 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechUtility;
+
+import org.json.JSONException;
 import org.litepal.crud.DataSupport;
 
 import java.text.SimpleDateFormat;
@@ -32,12 +42,59 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
     public String remarks = "无备注";
     public String username = "";
     private TextView tv_record_date;
+    private ImageView yuyin;
+    private static final int RECORD_AUDIO = 1;
+    private XunFeiUtil XunfeiUtil = new XunFeiUtil();
 
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.record);
 
+        final EditText et_record_money = findViewById(R.id.et_record_money);
+        final EditText et_record_remarks = findViewById(R.id.et_record_remarks);
+        tv_record_date = findViewById(R.id.tv_record_date);
+        Button btn_record_submit = findViewById(R.id.btn_record_submit);
+        Button btn_record_cancel = findViewById(R.id.btn_record_cancel);
+
+
+        //语音听写
         LinearLayout layout_record = findViewById(R.id.layout_record);
+        //获取语音控件
+        yuyin = findViewById(R.id.yuyin);
+        //申请录音权限
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            this.requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},RECORD_AUDIO);
+        }
+        //初始化
+        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=5caca3ab");
+        yuyin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                XunfeiUtil.showSpeechDialog(RecordActivity.this, new XunFeiUtil.onRecognizerResult() {
+                    @Override
+                    public void onSuccess(String result) {
+                        et_record_remarks.setText(result);// 设置输入框的文本
+                        et_record_remarks.requestFocus(); //请求获取焦点
+                        et_record_remarks.setSelection(et_record_remarks.length());//把光标定位末尾
+                    }
+
+                    @Override
+                    public void onFaild(JSONException e) {
+                        //UtilTools.toast(RecordActivity.this, "onFaild e=" + e);
+                        Toast.makeText(RecordActivity.this, "onFaild e=" + e, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(SpeechError speechError) {
+
+                    }
+                });
+
+            }
+        });
+
 
         if(MainActivity.flag==0){
             layout_record.setBackgroundColor(Color.parseColor("#00ffffff"));
@@ -60,12 +117,7 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
         rg_type.setOnCheckedChangeListener(this);
         rg_ie.setOnCheckedChangeListener(this);
 
-        final EditText et_record_money = findViewById(R.id.et_record_money);
-        final EditText et_record_remarks = findViewById(R.id.et_record_remarks);
-        tv_record_date = findViewById(R.id.tv_record_date);
 
-        Button btn_record_submit = findViewById(R.id.btn_record_submit);
-        Button btn_record_cancel = findViewById(R.id.btn_record_cancel);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         Date date0 = new Date(System.currentTimeMillis());

@@ -35,6 +35,7 @@ public class TypeActivity extends AppCompatActivity {
 
     private ArrayAdapter<Data> mAdapter;
     private List<Data> listItem = new ArrayList<>();
+    public String name;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +84,7 @@ public class TypeActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
+        name = intent.getStringExtra("name");
         if(name.equals("服装")){
             tv_type.setBackgroundResource(R.drawable.fuzhuang1);
         }
@@ -128,6 +129,14 @@ public class TypeActivity extends AppCompatActivity {
             }
         });
 
+        tv_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TypeActivity.this,LineChart_TypeActivity.class);
+                intent.putExtra("type",name);
+                startActivity(intent);
+            }
+        });
 
         iv_title_delete.setOnClickListener(new View.OnClickListener() {
             @Override

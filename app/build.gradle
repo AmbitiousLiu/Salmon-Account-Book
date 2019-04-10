@@ -9,6 +9,12 @@ android {
         versionCode 6
         versionName "4.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //支持lambda表达式
+        compileOptions {
+            targetCompatibility 1.8
+            sourceCompatibility 1.8
+        }
     }
     buildTypes {
         release {
