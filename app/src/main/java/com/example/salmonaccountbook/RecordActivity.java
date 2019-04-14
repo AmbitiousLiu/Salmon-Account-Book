@@ -57,7 +57,10 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
         tv_record_date = findViewById(R.id.tv_record_date);
         Button btn_record_submit = findViewById(R.id.btn_record_submit);
         Button btn_record_cancel = findViewById(R.id.btn_record_cancel);
-
+        final RadioGroup rg_ie = findViewById(R.id.rg_ie);
+        final RadioGroup rg_type = findViewById(R.id.rg_type);
+        rg_type.setOnCheckedChangeListener(this);
+        rg_ie.setOnCheckedChangeListener(this);
 
         //语音听写
         LinearLayout layout_record = findViewById(R.id.layout_record);
@@ -78,6 +81,28 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
                         et_record_remarks.setText(result);// 设置输入框的文本
                         et_record_remarks.requestFocus(); //请求获取焦点
                         et_record_remarks.setSelection(et_record_remarks.length());//把光标定位末尾
+                        Yuyin_Chuli yuyin_chuli = new Yuyin_Chuli(result);
+
+                        if(yuyin_chuli.isincome()){
+                            rg_ie.check(R.id.rb_income);
+                        }else{
+                            rg_ie.check(R.id.rb_expenditure);
+                        }
+
+                        if(yuyin_chuli.rtnType().equals("服装")){
+                            rg_type.check(R.id.rb_fuzhuang);
+                        }else if(yuyin_chuli.rtnType().equals("餐饮")){
+                            rg_type.check(R.id.rb_canyin);
+                        }else if(yuyin_chuli.rtnType().equals("出行")){
+                            rg_type.check(R.id.rb_chuxing);
+                        }else{
+                            rg_type.check(R.id.rb_qita);
+                        }
+                        double m = yuyin_chuli.rtnMoney();
+                        if(m!=Double.parseDouble("0")){
+                            et_record_money.setText(String.valueOf(m));
+                        }
+
                     }
 
                     @Override
@@ -112,10 +137,7 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
 
         LinearLayout ll_record_choosedate = findViewById(R.id.ll_record_choosedate);
 
-        RadioGroup rg_ie = findViewById(R.id.rg_ie);
-        RadioGroup rg_type = findViewById(R.id.rg_type);
-        rg_type.setOnCheckedChangeListener(this);
-        rg_ie.setOnCheckedChangeListener(this);
+
 
 
 
