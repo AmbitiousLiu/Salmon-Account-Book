@@ -1,7 +1,5 @@
 package com.example.salmonaccountbook;
 
-import android.content.Intent;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -55,14 +53,25 @@ public class Yuyin_Chuli {
 
     public double rtnMoney() {
         String s = "";
-        Pattern pattern = Pattern.compile("(\\d+\\.\\d+)");
+        ArrayList<String> s1 = new ArrayList<String>(){{
+            add("0");
+            add("0");
+        }};
+        Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(str);
-        matcher.find();
-        s = matcher.group();
-        if(s.equals("")==false){
-            return Double.parseDouble(s);
-        }else{
+        int i = 0;
+        while (matcher.find()) {
+            s1.set(i,matcher.group(0));
+            i++;
+            if(i==2) {
+                break;
+            }
+        }
+        s = s1.get(0)+"."+s1.get(1);
+        if(s.equals("0.0")){
             return 0;
+        }else{
+            return Double.parseDouble(s);
         }
 
     }
