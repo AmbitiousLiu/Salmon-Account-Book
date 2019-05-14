@@ -9,18 +9,16 @@
         android:id="@+id/iv_income"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ie_income"/>
+        android:background="@drawable/ie_income"
+        android:layout_marginBottom="10dp"/>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/fangkuai"
-        android:visibility="invisible"/>
+
 
     <ImageView
         android:id="@+id/iv_expenditure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ie_expenditure" />
+        android:background="@drawable/ie_expenditure"
+        android:layout_marginTop="10dp"/>
 
 </LinearLayout>

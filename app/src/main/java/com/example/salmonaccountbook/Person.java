@@ -8,14 +8,23 @@ public class Person extends DataSupport {
     private String birthday;
     private String beijing;
     private String denglu;
-    private StringBuffer image;
+    private String plan;
+    private String remind;
 
-    public StringBuffer getImage() {
-        return image;
+    public String getRemind() {
+        return remind;
     }
 
-    public void setImage(StringBuffer image) {
-        this.image = image;
+    public void setRemind(String remind) {
+        this.remind = remind;
+    }
+
+    public String getPlan() {
+        return plan;
+    }
+
+    public void setPlan(String plan) {
+        this.plan = plan;
     }
 
     public String getBirthday() {
@@ -50,7 +59,7 @@ public class Person extends DataSupport {
         return beijing;
     }
 
-    public  String getDenglu(){
+    public String getDenglu(){
         return denglu;
     }
 

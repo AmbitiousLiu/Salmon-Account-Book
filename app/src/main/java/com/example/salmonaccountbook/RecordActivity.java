@@ -1,6 +1,14 @@
 package com.example.salmonaccountbook;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,13 +16,18 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +43,7 @@ import org.json.JSONException;
 import org.litepal.crud.DataSupport;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +60,9 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
     private static final int RECORD_AUDIO = 1;
     private XunFeiUtil XunfeiUtil = new XunFeiUtil();
 
+    private Calendar calendar;//用来装日期
+    private DatePickerDialog dialog;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +74,13 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
         tv_record_date = findViewById(R.id.tv_record_date);
         Button btn_record_submit = findViewById(R.id.btn_record_submit);
         Button btn_record_cancel = findViewById(R.id.btn_record_cancel);
+
         final RadioGroup rg_ie = findViewById(R.id.rg_ie);
         final RadioGroup rg_type = findViewById(R.id.rg_type);
         rg_type.setOnCheckedChangeListener(this);
         rg_ie.setOnCheckedChangeListener(this);
+
+
 
         //语音听写
         LinearLayout layout_record = findViewById(R.id.layout_record);
@@ -81,6 +101,7 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
                         et_record_remarks.setText(result);// 设置输入框的文本
                         et_record_remarks.requestFocus(); //请求获取焦点
                         et_record_remarks.setSelection(et_record_remarks.length());//把光标定位末尾
+
                         Yuyin_Chuli yuyin_chuli = new Yuyin_Chuli(result);
 
                         if(yuyin_chuli.isincome()){
@@ -138,6 +159,8 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
         LinearLayout ll_record_choosedate = findViewById(R.id.ll_record_choosedate);
 
 
+        rg_type.setOnCheckedChangeListener(this);
+        rg_ie.setOnCheckedChangeListener(this);
 
 
 
@@ -157,8 +180,22 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
         ll_record_choosedate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RecordActivity.this, CalendarActivity.class);
-                startActivityForResult(intent,1);
+                calendar = Calendar.getInstance();
+                dialog = new DatePickerDialog(RecordActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                System.out.println("年-->" + year + "月-->"
+                                        + monthOfYear + "日-->" + dayOfMonth);
+                                tv_record_date.setText(String.valueOf(year*10000+(monthOfYear+1)*100+dayOfMonth));
+                                date = String.valueOf(year*10000+(monthOfYear+1)*100+dayOfMonth);
+                            }
+                        }, calendar.get(Calendar.YEAR), calendar
+                        .get(Calendar.MONTH), calendar
+                        .get(Calendar.DAY_OF_MONTH));
+                dialog.show();
             }
         });
 
@@ -219,23 +256,25 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
                         data.setUsername(username);
                         data.save();
                         Toast.makeText(RecordActivity.this,"保存成功！",Toast.LENGTH_LONG).show();
+                        List<Data> dataList2 = DataSupport.where("username = ? and date = ? and ie = ?",username,date,"expenditure")
+                                .find(Data.class);
+                        double total2 = 0;
+                        for(Data data1:dataList2){
+                            total2 += data1.getMoney();
+                        }
+                        List<Person> people1 = DataSupport.where("username = ?",LoginActivity.username).find(Person.class);
+                        Person person = people1.get(0);
+                        String plan = person.getPlan();
+                        if(plan!=null){
+                            if(total2>=(Double.parseDouble(plan)/6)){
+                                sendExpenditureExceptionMessage(total2,date);
+                            }
+                        }
                         onBackPressed();
                     }
                 }
             }
         });
-    }
-
-    protected void onActivityResult(int requestCode,int resultCode,Intent data){
-        switch (requestCode){
-            case 1:
-                if(resultCode == RESULT_OK){
-                    date = data.getStringExtra("choose_date");
-                    tv_record_date.setText(date);
-                }
-                break;
-            default:
-        }
     }
 
     public void onCheckedChanged(RadioGroup group, int checkedId){
@@ -259,6 +298,39 @@ public class RecordActivity extends AppCompatActivity implements RadioGroup.OnCh
                 type = "其他";
                 break;
         }
+    }
+
+
+    //异常支出
+    public void sendExpenditureExceptionMessage(double total,String date){
+        /**
+         * 发送通知
+         */
+        Intent intent  = new Intent(this,DateActivity.class);
+        intent.putExtra("date",date);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            String channelId = "default";
+            String channelName = "默认通知";
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH));
+        }
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(IeActivity.class);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = new NotificationCompat.Builder(this, "default")
+                .setSmallIcon(R.mipmap.jp)
+                .setContentTitle("检测到异常支出！")
+                .setContentText("您在"+date+"这天共消费：￥"+total+"，点此查看详情")
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setContentIntent(pendingIntent)
+                .build();
+
+        notificationManager.notify(1, notification);
     }
 
 }

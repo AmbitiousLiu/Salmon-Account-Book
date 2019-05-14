@@ -29,14 +29,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="250dp"
-                android:src="@drawable/beijing1"/>
+                android:src="@drawable/gou"/>
             <ImageView
                 android:id="@+id/iv_beijing2"
                 android:layout_margin="5dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="250dp"
-                android:src="@drawable/beijing2"/>
+                android:src="@drawable/lv"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,14 +50,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="250dp"
-                android:src="@drawable/nvsheng"/>
+                android:src="@drawable/lan"/>
             <ImageView
                 android:id="@+id/iv_beijing4"
                 android:layout_margin="5dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="250dp"
-                android:src="@drawable/cat"/>
+                android:src="@drawable/hong"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,36 +71,16 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="250dp"
-                android:src="@drawable/hehua"/>
+                android:src="@drawable/deng"/>
             <ImageView
                 android:id="@+id/iv_beijing6"
                 android:layout_margin="5dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="250dp"
-                android:src="@drawable/pugongying"/>
+                android:src="@drawable/shan"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp">
-            <ImageView
-                android:id="@+id/iv_beijing7"
-                android:layout_margin="5dp"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="250dp"
-                android:src="@drawable/yezi"/>
-            <ImageView
-                android:id="@+id/iv_beijing8"
-                android:layout_margin="5dp"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="250dp"
-                android:src="@drawable/haidi"/>
-        </LinearLayout>
+
 
 
 

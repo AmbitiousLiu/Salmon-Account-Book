@@ -21,7 +21,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        final String beijing = "beijing1";
+        final String beijing = "beijing5";
         final String login = "no";
         Button btn_register = findViewById(R.id.btn_register);
         final EditText et_name_register = findViewById(R.id.et_name_register);
@@ -58,7 +58,8 @@ public class RegisterActivity extends AppCompatActivity {
                     person.setBirthday(et_birthday.getText().toString());
                     person.setBeijing(beijing);
                     person.setDenglu(login);
-                    person.setImage(null);
+                    person.setPlan(null);
+                    person.setRemind(null);
                     person.save();
                     Toast.makeText(RegisterActivity.this,"注册成功！",Toast.LENGTH_LONG).show();
                     onBackPressed();

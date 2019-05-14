@@ -3,12 +3,14 @@ package com.example.salmonaccountbook;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +27,12 @@ public class PersonalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal);
 
-        RelativeLayout layout_personal = findViewById(R.id.layout_personal);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.hide();
+        }
+
+        LinearLayout layout_personal = findViewById(R.id.layout_personal);
 
         if(MainActivity.flag==0){
             layout_personal.setBackgroundColor(Color.parseColor("#00ffffff"));
@@ -119,8 +126,9 @@ public class PersonalActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(et_password_new.getText().toString().equals("")){
                     Toast.makeText(PersonalActivity.this,"密码不能为空！",Toast.LENGTH_LONG).show();
-                }
-                else if(et_password_new.getText().toString().equals(et_password_ensure.getText().toString())){
+                }else if(et_password_new.getText().toString().length()<6){
+                    Toast.makeText(PersonalActivity.this,"密码不能少于6位数！",Toast.LENGTH_LONG).show();
+                }else if(et_password_new.getText().toString().equals(et_password_ensure.getText().toString())){
                     Person person = new Person();
                     person.setPassword(et_password_new.getText().toString());
 //                person.setBirthday(et_password_birthday.getText().toString());

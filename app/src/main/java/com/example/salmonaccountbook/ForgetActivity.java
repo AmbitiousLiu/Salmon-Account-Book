@@ -18,8 +18,9 @@ public class ForgetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forget);
+
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
+        if(actionBar!=null){
             actionBar.hide();
         }
 

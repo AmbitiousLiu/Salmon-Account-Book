@@ -2,109 +2,176 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
-
-<LinearLayout
-    android:padding="10dp"
     android:gravity="center"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:padding="15dp">
+
 
     <LinearLayout
-        android:layout_marginLeft="60dp"
         android:id="@+id/ll_fuzhuang"
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-        <ImageView
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/fuzhuang"/>
-        <TextView
-            android:layout_gravity="center_horizontal"
-            android:text="服装"
-            android:textSize="25dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginRight="60dp"
-        android:id="@+id/ll_chihe"
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/chihe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_gravity="center_horizontal"
-            android:text="餐饮"
-            android:textSize="25dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-</LinearLayout>
-    <LinearLayout
-        android:padding="10dp"
-        android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp"
+        android:paddingRight="7dp"
+        android:paddingLeft="7dp"
+        android:background="@drawable/shape4">
         <LinearLayout
-            android:layout_marginLeft="60dp"
-            android:id="@+id/ll_chuxing"
-            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
             <ImageView
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/chuxing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/fuzhuang"/>
             <TextView
-                android:layout_gravity="center_horizontal"
-                android:text="出行"
-                android:textSize="25dp"
+                android:layout_gravity="center"
+                android:text="服装"
+                android:textSize="20dp"
+                android:textColor="#368ce9"
+                android:layout_marginLeft="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp"
+            android:gravity="right">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=">"
+                android:textSize="28dp"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_chihe"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:paddingRight="7dp"
+        android:paddingLeft="7dp"
+        android:background="@drawable/shape4"
+        android:layout_height="60dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@drawable/chihe"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+            <TextView
+                android:layout_gravity="center"
+                android:text="餐饮"
+                android:textSize="20dp"
+                android:textColor="#368ce9"
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp"
+            android:gravity="right">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=">"
+                android:textSize="28dp"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_chuxing"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:background="@drawable/shape4"
+            android:layout_marginTop="15dp"
+            android:paddingRight="7dp"
+            android:paddingLeft="7dp"
+            android:layout_height="60dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/chuxing"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+                <TextView
+                    android:layout_gravity="center"
+                    android:text="出行"
+                    android:textSize="20dp"
+                    android:textColor="#368ce9"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="60dp"
+                android:gravity="right">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textSize="28dp"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginRight="60dp"
             android:id="@+id/ll_qita"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/qita"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:text="其他"
-                android:textSize="25dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/shape4"
+            android:layout_height="60dp"
+            android:paddingRight="7dp"
+            android:paddingLeft="7dp"
+            android:layout_marginTop="15dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/qita"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+                <TextView
+                    android:layout_gravity="center"
+                    android:text="其他"
+                    android:textSize="20dp"
+                    android:textColor="#368ce9"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="60dp"
+                android:gravity="right">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textSize="28dp"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

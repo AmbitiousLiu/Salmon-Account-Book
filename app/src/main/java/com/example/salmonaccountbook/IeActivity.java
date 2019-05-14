@@ -70,8 +70,10 @@ public class IeActivity extends AppCompatActivity {
         final ImageView iv_title_back = findViewById(R.id.iv_title_back);
         final ImageView iv_title_delete = findViewById(R.id.iv_title_delete);
 
+
         Intent intent = getIntent();
         final String name = intent.getStringExtra("name");
+
 
         if("income".equals(name)){
             tv_ie.setBackgroundResource(R.drawable.income);

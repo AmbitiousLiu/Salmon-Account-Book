@@ -3,6 +3,11 @@ package com.example.salmonaccountbook;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -27,6 +33,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -60,14 +67,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static MainActivity instance_main = null;
     static int flag=0;
+    static int flag_exceptionExpenditure=0;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+
+
         /*-----------------------------------------------------------主活动碎片跳转事件代码--------------------------------------------------------*/
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -117,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
+//        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
 
@@ -145,20 +159,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             LoginActivity.username = people.get(0).getUsername();
         }
 
+
+
+
+
+
+
+
 //        FragmentManager fragmentManager = getSupportFragmentManager();
 //        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        if(fragmentTransaction.isEmpty()){
-//            fragmentTransaction.add(R.id.layout_fm_content,ie_fragment);
-//            fragmentTransaction.commit();
-//        }
+//        fragmentTransaction.add(R.id.layout_fm_content,ie_fragment);
+//        fragmentTransaction.commit();
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);
-
-
-
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -175,8 +190,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        if(LoginActivity.username!=null){
+            //如果超出计划就提醒
+            List<Person> people1 = DataSupport.where("username = ?",LoginActivity.username).find(Person.class);
+            Person person = people1.get(0);
+            String plan = person.getPlan();
+            String remind = person.getRemind();
+            if(plan!=null&&plan.equals("")==false&&remind!=null&&remind.equals("")==false){
+                Calendar calendar = Calendar.getInstance();
+                int month = calendar.get(Calendar.MONTH)+1;
+                int year = calendar.get(Calendar.YEAR);
+                final long month_date_min = year*10000+month*100+1;
+                final long month_date_max = year*10000+month*100+31;
 
-    }
+                List<Data> dataList = DataSupport.where("username = ? and ie = ? and date >= ? and date <= ?",LoginActivity.username,"expenditure",Long.toString(month_date_min),Long.toString(month_date_max))
+                        .find(Data.class);
+                double total = 0;
+                for(Data data:dataList){
+                    total += data.getMoney();
+                }
+
+                if(Double.parseDouble(plan)-total<=Double.parseDouble(remind)&&flag_exceptionExpenditure==0){
+                    //提醒快超额了
+                    /**
+                     * 发送通知
+                     */
+                    Intent intent  = new Intent(this,IeActivity.class);
+                    intent.putExtra("name","expenditure");
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        String channelId = "default";
+                        String channelName = "默认通知";
+                        notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH));
+                    }
+                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                    stackBuilder.addParentStack(IeActivity.class);
+                    stackBuilder.addNextIntent(intent);
+                    PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    Notification notification = new NotificationCompat.Builder(this, "default")
+                            .setSmallIcon(R.mipmap.jp)
+                            .setContentTitle("请注意您的消费情况哦！")
+                            .setContentText("您这个月计划消费：￥"+plan+"，已消费：￥"+total)
+                            .setAutoCancel(true)
+                            .setDefaults(Notification.DEFAULT_ALL)
+                            .setWhen(System.currentTimeMillis())
+                            .setContentIntent(pendingIntent)
+                            .build();
+                    notificationManager.notify(1, notification);
+                    flag_exceptionExpenditure=1;
+                }
+            }
+        }
+
+
+    }//end onCreate()
+
+
+
+
 
 
 
@@ -191,29 +264,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String beijing = people.get(0).getBeijing();
 //            StringBuffer image = people.get(0).getImage();
             if(beijing.toString().equals("beijing1")){
-                drawerLayout.setBackgroundResource(R.drawable.beijing1);
+                drawerLayout.setBackgroundResource(R.drawable.gou);
             }
             else if(beijing.toString().equals("beijing2")){
-                drawerLayout.setBackgroundResource(R.drawable.beijing2);
+                drawerLayout.setBackgroundResource(R.drawable.lv);
             }
             else if(beijing.toString().equals("beijing3")){
-                drawerLayout.setBackgroundResource(R.drawable.nvsheng);
+                drawerLayout.setBackgroundResource(R.drawable.lan);
 
             }
             else if(beijing.toString().equals("beijing4")){
-                drawerLayout.setBackgroundResource(R.drawable.cat);
+                drawerLayout.setBackgroundResource(R.drawable.hong);
             }
             else if(beijing.toString().equals("beijing5")){
-                drawerLayout.setBackgroundResource(R.drawable.hehua);
+                drawerLayout.setBackgroundResource(R.drawable.deng);
             }
             else if(beijing.toString().equals("beijing6")){
-                drawerLayout.setBackgroundResource(R.drawable.pugongying);
-            }
-            else if(beijing.toString().equals("beijing7")){
-                drawerLayout.setBackgroundResource(R.drawable.yezi);
-            }
-            else if(beijing.toString().equals("beijing8")){
-                drawerLayout.setBackgroundResource(R.drawable.haidi);
+                drawerLayout.setBackgroundResource(R.drawable.shan);
             }
 //            if(image==null){
 //                userimage.setImageResource(R.drawable.nobody);
@@ -224,11 +291,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+
     protected void onResume(){
         super.onResume();
         CoordinatorLayout layout_app_bar_main = findViewById(R.id.layout_app_bar_main);
         if(MainActivity.flag==0){
-            layout_app_bar_main.setBackgroundColor(Color.parseColor("#00ffffff"));
+            layout_app_bar_main.setBackgroundColor(Color.parseColor("#46ffffff"));
         }else if(MainActivity.flag==1){
             layout_app_bar_main.setBackgroundColor(Color.parseColor("#58000000"));
         }
@@ -265,21 +333,74 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            List<Person> people = DataSupport.where("username = ?",LoginActivity.username).find(Person.class);
-            Person person = people.get(0);
-            final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("个人信息")
-                    .setMessage("用户名："+LoginActivity.username+"\n生日："+person.getBirthday())
-                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+        List<Person> people = DataSupport.where("username = ?",LoginActivity.username).find(Person.class);
+        Person person = people.get(0);
+        switch(id){
+            case R.id.action_settings:{
+                final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("个人信息")
+                        .setMessage("用户名："+LoginActivity.username+"\n生日："+person.getBirthday())
+                        .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        }).create();
+                dialog.show();
+                break;
+            }
+            case R.id.action_setmoney:{
+                View view1 = getLayoutInflater().inflate(R.layout.plan,null);
+                EditText editText = view1.findViewById(R.id.et_dialog_plan);
+                EditText editText2 = view1.findViewById(R.id.et_dialog_remind);
+                if(person.getPlan()!=null){
+                    editText.setText(String.valueOf(person.getPlan()));
+                    editText2.setText(String.valueOf(person.getRemind()));
+                }else{
+                    editText.setText("");
+                    editText2.setText("");
+                }
+                final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("设置计划")
+                        .setMessage("计划每月支出金额：")//加一个输入框
+                        .setView(view1)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //设置计划
+                                String plan = (editText.getText().toString());
+                                String remind = (editText2.getText().toString());
+
+                                Person person = new Person();
+                                person.setPlan(plan);
+                                person.setRemind(remind);
+                                person.updateAll("username = ?",LoginActivity.username);
+
+                                Toast.makeText(MainActivity.this,"设置计划成功:￥"+person.getPlan(),Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton("清除设置", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //清除就将曾经设置过的计划删除掉
+
+                                Person person = new Person();
+                                person.setPlan("");
+                                person.setRemind("");
+                                person.updateAll("username = ?",LoginActivity.username);
+
+                                Toast.makeText(MainActivity.this,"已清除原有计划",Toast.LENGTH_LONG).show();
                         }
-                    }).create();
-            dialog.show();
-            return true;
+                        })
+                        .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //什么都不做
+                            }
+                        }).create();
+                dialog.show();
+                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -342,8 +463,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
             dialog.show();
-
-
         } else if (id == R.id.nav_deleteaccount) {
             final AlertDialog dialog2 = new AlertDialog.Builder(MainActivity.this)
                     .setTitle("提示")
@@ -403,7 +522,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     }).create();
             dialog1.show();
-        }else if(id == R.id.nav_summarize){
+        } else if(id == R.id.nav_summarize){
             Intent intent = new Intent(MainActivity.this,Scroll_SummarizeActivity.class);
             startActivity(intent);
         }
@@ -455,7 +574,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     e.printStackTrace();
                 }
                 if (Build.VERSION.SDK_INT >= 24){
-                    imageUri = FileProvider.getUriForFile(MainActivity.this,"com.example.salmonaccountbook.fileprovider",outputImage);
+                    int checkCallPhonePermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
+                    if(checkCallPhonePermission != PackageManager.PERMISSION_GRANTED){
+                        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.CAMERA},1);
+                        return;
+                    }else{
+                        imageUri = FileProvider.getUriForFile(MainActivity.this,"com.example.salmonaccountbook.fileprovider",outputImage);
+                    }
                 }else{
                     imageUri = Uri.fromFile(outputImage);
                 }
@@ -480,13 +605,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 //查看头像
-        root.findViewById(R.id.btn_see).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "查看头像功能正在更新中...", Toast.LENGTH_SHORT).show();
-                mCameraDialog.dismiss();
-            }
-        });
+//        root.findViewById(R.id.btn_see).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(MainActivity.this, "查看头像功能正在更新中...", Toast.LENGTH_SHORT).show();
+//
+//                mCameraDialog.dismiss();
+//            }
+//        });
 //取消事件
         root.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -627,18 +753,3 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

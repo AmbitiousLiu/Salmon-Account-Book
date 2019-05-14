@@ -6,6 +6,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">个人信息</string>
+    <string name="action_setmoney">设置计划</string>
     <string name="title_home">收/支</string>
     <string name="title_dashboard">类型</string>
     <string name="title_notifications">日期</string>

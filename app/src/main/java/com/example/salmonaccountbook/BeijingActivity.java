@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
@@ -24,13 +25,16 @@ public class BeijingActivity extends AppCompatActivity {
     ImageView beijing_4;
     ImageView beijing_5;
     ImageView beijing_6;
-    ImageView beijing_7;
-    ImageView beijing_8;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.beijing);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.hide();
+        }
 
         beijing_1 = findViewById(R.id.iv_beijing1);
         beijing_2 = findViewById(R.id.iv_beijing2);
@@ -38,8 +42,7 @@ public class BeijingActivity extends AppCompatActivity {
         beijing_4 = findViewById(R.id.iv_beijing4);
         beijing_5 = findViewById(R.id.iv_beijing5);
         beijing_6 = findViewById(R.id.iv_beijing6);
-        beijing_7 = findViewById(R.id.iv_beijing7);
-        beijing_8 = findViewById(R.id.iv_beijing8);
+
         LinearLayout layout_beijing = findViewById(R.id.layout_beijing);
 
         if(MainActivity.flag==0){
@@ -114,26 +117,7 @@ public class BeijingActivity extends AppCompatActivity {
                 person.updateAll("username = ?",LoginActivity.username);
                 Toast.makeText(BeijingActivity.this,"背景修改成功！",Toast.LENGTH_LONG).show();
                 onBackPressed();
-            }
-        });
-        beijing_7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Person person = new Person();
-                person.setBeijing("beijing7");
-                person.updateAll("username = ?",LoginActivity.username);
-                Toast.makeText(BeijingActivity.this,"背景修改成功！",Toast.LENGTH_LONG).show();
-                onBackPressed();
-            }
-        });
-        beijing_8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Person person = new Person();
-                person.setBeijing("beijing8");
-                person.updateAll("username = ?",LoginActivity.username);
-                Toast.makeText(BeijingActivity.this,"背景修改成功！",Toast.LENGTH_LONG).show();
-                onBackPressed();
+
             }
         });
 
